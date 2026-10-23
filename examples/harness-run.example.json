@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "harness": {
+    "id": "migration-factory",
+    "name": "Migration Factory",
+    "tagline": "Example of a harness that writes its own run file",
+    "traits": [
+      { "label": "Method", "value": "Discover · translate · prove · cut over" },
+      { "label": "Source", "value": "IBM Assembler" },
+      { "label": "Target", "value": "Go services" }
+    ]
+  },
+  "project": { "name": "claims-batch", "path": "factory-runs/claims-batch" },
+  "importedAt": "2026-10-13T09:30:00-04:00",
+  "timezone": "America/New_York",
+  "phases": [
+    {
+      "key": "discover",
+      "label": "Discover",
+      "summary": "Inventory the estate and decide what moves first.",
+      "steps": [
+        { "key": "inventory", "label": "Inventory", "agentIds": ["scout"], "status": "done", "output": "estate.json", "finishedAt": "2026-10-01T12:00:00-04:00" },
+        { "key": "slice", "label": "Slice into waves", "agentIds": ["scout", "lead"], "status": "done", "output": "waves.md",
+          "gates": [{ "label": "Wave plan sign-off", "status": "done", "approval": { "decision": "approved", "by": "priya@example.com", "role": "Migration lead", "at": "2026-10-02T16:30:00-04:00" } }] }
+      ]
+    },
+    {
+      "key": "translate",
+      "label": "Translate",
+      "summary": "Turn each module into a Go service with tests.",
+      "steps": [
+        { "key": "spec", "label": "Behaviour specs", "agentIds": ["scout"], "status": "done", "output": "specs/" },
+        { "key": "generate", "label": "Generate Go", "agentIds": ["translator"], "status": "active", "startedAt": "2026-10-09T08:00:00-04:00" },
+        { "key": "unit-tests", "label": "Unit tests", "agentIds": ["prover"], "status": "pending" }
+      ]
+    },
+    {
+      "key": "prove",
+      "label": "Prove",
+      "summary": "Run old and new side by side on the same input and compare outputs.",
+      "steps": [
+        { "key": "parallel-run", "label": "Parallel run", "agentIds": ["prover"], "status": "pending" },
+        { "key": "sign-off", "label": "Equivalence sign-off", "agentIds": ["lead"], "status": "pending",
+          "gates": [{ "label": "Outputs identical", "status": "pending" }] }
+      ]
+    },
+    {
+      "key": "cutover",
+      "label": "Cut over",
+      "steps": [
+        { "key": "switch", "label": "Switch traffic", "agentIds": ["lead"], "status": "pending" },
+        { "key": "decommission", "label": "Decommission", "agentIds": ["lead"], "status": "pending", "optional": true }
+      ]
+    }
+  ],
+  "agents": [
+    { "id": "scout", "name": "Scout", "role": "Estate analyst", "icon": "🔎", "description": "Reads the source estate and writes behaviour specs.", "model": "claude-sonnet-5-5", "usage": { "runs": 42, "tokens": 1850000, "costUsd": 6.2 } },
+    { "id": "translator", "name": "Translator", "role": "Code generator", "icon": "🔁", "description": "Turns one module at a time into a Go service.", "model": "claude-opus-5-5", "usage": { "runs": 18, "tokens": 2400000, "costUsd": 14.9 } },
+    { "id": "prover", "name": "Prover", "role": "Test and equivalence", "icon": "🧪", "description": "Writes tests and compares old and new outputs." },
+    { "id": "lead", "name": "Priya", "role": "Migration lead (human)", "icon": "PL", "description": "Approves waves and signs off equivalence." }
+  ],
+  "position": {
+    "state": "running",
+    "phaseKey": "translate",
+    "stepKey": "generate",
+    "agentId": "translator",
+    "workItemId": "CLM040",
+    "summary": "Translator is generating the Go service for CLM040 (claims pricing).",
+    "since": "2026-10-13T08:40:00-04:00"
+  },
+  "workItems": [
+    { "id": "CLM010", "title": "Claims intake", "status": "done", "group": "Wave 1" },
+    { "id": "CLM020", "title": "Eligibility check", "status": "done", "group": "Wave 1" },
+    { "id": "CLM030", "title": "Member lookup", "status": "done", "group": "Wave 1" },
+    { "id": "CLM040", "title": "Claims pricing", "status": "active", "group": "Wave 2", "agentId": "translator" },
+    { "id": "CLM050", "title": "Adjudication", "status": "blocked", "rawStatus": "waiting on spec", "group": "Wave 2" },
+    { "id": "CLM060", "title": "Payment file", "status": "pending", "group": "Wave 2" }
+  ],
+  "timeline": [
+    { "at": "2026-10-01T12:00:00-04:00", "summary": "Inventory finished: 214 Assembler modules, 61 in scope.", "level": "success", "agentId": "scout", "phaseKey": "discover", "stepKey": "inventory" },
+    { "at": "2026-10-02T16:30:00-04:00", "summary": "Wave plan approved.", "level": "success", "agentId": "lead", "phaseKey": "discover", "stepKey": "slice" },
+    { "at": "2026-10-11T10:05:00-04:00", "summary": "CLM050 spec has an open question on rounding; translation held.", "level": "warning", "agentId": "scout", "phaseKey": "translate", "stepKey": "spec" },
+    { "at": "2026-10-13T08:40:00-04:00", "summary": "Started CLM040 claims pricing.", "level": "info", "agentId": "translator", "phaseKey": "translate", "stepKey": "generate" }
+  ],
+  "metrics": [
+    { "group": "Source: Assembler estate", "label": "Modules in scope", "value": 61 },
+    { "group": "Source: Assembler estate", "label": "Lines", "value": "148,900" },
+    { "group": "Target: Go", "label": "Services generated", "value": 3 },
+    { "group": "Target: Go", "label": "Test coverage", "value": "81%", "tone": "good" },
+    { "group": "Budget", "label": "Spend", "value": "$21.10 / $60.00" }
+  ]
+}

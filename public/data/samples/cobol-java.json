@@ -1,0 +1,1041 @@
+{
+  "schemaVersion": 1,
+  "harness": {
+    "id": "cobol-java",
+    "name": "COBOL → Java Harness",
+    "tagline": "Forward engineering · graph-first · agent-driven",
+    "traits": [
+      {
+        "label": "Method",
+        "value": "Graph-first harness lifecycle"
+      },
+      {
+        "label": "Source",
+        "value": "COBOL"
+      },
+      {
+        "label": "Target",
+        "value": "Java / Spring Boot"
+      }
+    ],
+    "workItemLabel": "Stories",
+    "epicLabel": "Epics"
+  },
+  "project": {
+    "name": "CardDemo",
+    "path": "codegen_output/aws-mf-mod-carddemo"
+  },
+  "importedAt": "2026-09-30T10:12:30-04:00",
+  "sample": true,
+  "timezone": "America/New_York",
+  "phases": [
+    {
+      "key": "understand",
+      "label": "Understand",
+      "summary": "Capture the business outcome, parse the COBOL estate into the Neo4j code graph and explore it.",
+      "steps": [
+        {
+          "key": "outcome",
+          "label": "Outcome",
+          "description": "Record the modernization outcome and success measures",
+          "agentIds": [],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "Outcome statement",
+          "finishedAt": "2026-09-01T09:05:00-04:00",
+          "gates": []
+        },
+        {
+          "key": "intake",
+          "label": "Intake",
+          "description": "Discover COBOL, copybooks, JCL, BMS, CSD",
+          "agentIds": [],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "Workspace + repo inventory",
+          "finishedAt": "2026-09-01T09:10:00-04:00",
+          "gates": []
+        },
+        {
+          "key": "parse",
+          "label": "Parse",
+          "description": "ProLeap extractor → schemaVersion 2 JSON",
+          "agentIds": [],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "Program / paragraph / data-item contract",
+          "finishedAt": "2026-09-01T10:40:00-04:00",
+          "gates": [
+            {
+              "label": "Parse",
+              "status": "done",
+              "detail": "31 / 31 programs parsed, 0 errors"
+            }
+          ]
+        },
+        {
+          "key": "graph",
+          "label": "Graph",
+          "description": "Ingest into Neo4j: CALLS, PERFORMS, READS, WRITES, EXECUTES_CICS",
+          "agentIds": [
+            "enrichment"
+          ],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "Code graph (source of truth)",
+          "finishedAt": "2026-09-01T11:20:00-04:00",
+          "gates": [
+            {
+              "label": "Graph",
+              "status": "done",
+              "detail": "4,812 nodes · 11,406 edges · 47/47 copybooks resolved"
+            }
+          ]
+        },
+        {
+          "key": "explore",
+          "label": "Explore",
+          "description": "Ask the codebase: graph-grounded Q&A",
+          "agentIds": [
+            "ask"
+          ],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "Answers with graph citations",
+          "finishedAt": "2026-09-02T15:30:00-04:00",
+          "gates": []
+        }
+      ]
+    },
+    {
+      "key": "design",
+      "label": "Design",
+      "summary": "Grounded BRD, epics & stories, ranked seams, story plan, bounded contexts and service design.",
+      "steps": [
+        {
+          "key": "blueprint",
+          "label": "Blueprint",
+          "description": "Subsystem map-reduce BRD, judged on five dimensions, improved",
+          "agentIds": [
+            "brd",
+            "judge"
+          ],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "BRD v3 (:BRD node + HTML)",
+          "finishedAt": "2026-09-04T15:35:00-04:00",
+          "gates": [
+            {
+              "label": "BRD judge",
+              "status": "done",
+              "detail": "4.7 / 5, rated high (v3, after 2 improve passes)",
+              "approval": {
+                "decision": "approved",
+                "by": "tech.lead@carddemo.example",
+                "role": "tech_lead",
+                "at": "2026-09-04T15:35:00-04:00"
+              }
+            }
+          ]
+        },
+        {
+          "key": "backlog",
+          "label": "Backlog",
+          "description": "Epics first, then stories + acceptance criteria per epic",
+          "agentIds": [
+            "story"
+          ],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "3 epics · 9 stories · 20 ACs",
+          "finishedAt": "2026-09-06T12:10:00-04:00",
+          "gates": [
+            {
+              "label": "Backlog coverage",
+              "status": "done",
+              "detail": "10 / 10 requirements covered · 0 orphans · 0 unknown refs",
+              "approval": {
+                "decision": "approved",
+                "by": "product.owner@carddemo.example",
+                "role": "product_owner",
+                "at": "2026-09-06T13:00:00-04:00"
+              }
+            }
+          ]
+        },
+        {
+          "key": "seams",
+          "label": "Seams",
+          "description": "Rank strangler-fig seams (pure Cypher, no LLM in scoring)",
+          "agentIds": [
+            "seam"
+          ],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "9 ranked seam candidates",
+          "finishedAt": "2026-09-07T10:00:00-04:00",
+          "gates": []
+        },
+        {
+          "key": "plan",
+          "label": "Plan",
+          "description": "Dependency derivation + topological order",
+          "agentIds": [],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "Acyclic story DAG",
+          "finishedAt": "2026-09-07T14:45:00-04:00",
+          "gates": [
+            {
+              "label": "Story DAG",
+              "status": "done",
+              "detail": "9 stories · 7 edges · 0 cycles",
+              "approval": {
+                "decision": "approved",
+                "by": "tech.lead@carddemo.example",
+                "role": "tech_lead",
+                "at": "2026-09-07T15:00:00-04:00"
+              }
+            }
+          ]
+        },
+        {
+          "key": "domain",
+          "label": "Domain Design",
+          "description": "Bounded contexts, module-vs-microservice, DDD tactical design",
+          "agentIds": [
+            "design",
+            "judge"
+          ],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "Domain design v2 (:DomainDesign)",
+          "finishedAt": "2026-09-09T15:10:00-04:00",
+          "gates": []
+        },
+        {
+          "key": "design",
+          "label": "Design",
+          "description": "Technical design: services, APIs, persistence, ADRs",
+          "agentIds": [
+            "design"
+          ],
+          "status": "done",
+          "rawStatus": "passed",
+          "output": "Technical design v1 + module scaffold",
+          "finishedAt": "2026-09-12T14:20:00-04:00",
+          "gates": [
+            {
+              "label": "Data ownership",
+              "status": "done",
+              "detail": "7 / 7 files single-owner (CARDXREF moved to Card)",
+              "approval": {
+                "decision": "approved",
+                "by": "architect@carddemo.example",
+                "role": "architect",
+                "at": "2026-09-12T14:20:00-04:00"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "migrate",
+      "label": "Migrate",
+      "summary": "Build generates the Java code story by story; Verify checks it behaves like the COBOL.",
+      "steps": [
+        {
+          "key": "build",
+          "label": "Build",
+          "description": "Per story: tests (red) → implementation (green) → repair → quality gate",
+          "agentIds": [
+            "codegen",
+            "repair",
+            "advisor"
+          ],
+          "status": "active",
+          "rawStatus": "running",
+          "output": "Spring Boot module in codegen_output/",
+          "gates": [
+            {
+              "label": "Code",
+              "status": "pending",
+              "detail": "4 / 9 stories accepted · STORY-005 in repair"
+            }
+          ]
+        },
+        {
+          "key": "verify",
+          "label": "Verify",
+          "description": "Field-aware diff with COMP-3 / scale / date tolerance",
+          "agentIds": [
+            "equivalence_triage"
+          ],
+          "status": "pending",
+          "rawStatus": "pending",
+          "output": "Verdict + seam-linked defect tickets",
+          "gates": [
+            {
+              "label": "Equivalence",
+              "status": "pending",
+              "detail": "Waiting for Build"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "agents": [
+    {
+      "id": "enrichment",
+      "name": "Enrichment",
+      "role": "Haiku tier",
+      "description": "Summarises programs and paragraphs onto graph nodes.",
+      "model": "claude-haiku-4-5-20251001",
+      "usage": {
+        "runs": 31,
+        "tokens": 410000,
+        "costUsd": 0.62
+      }
+    },
+    {
+      "id": "ask",
+      "name": "Ask",
+      "role": "Haiku tier",
+      "description": "Answers questions about the codebase, grounded in graph queries.",
+      "model": "claude-haiku-4-5-20251001",
+      "usage": {
+        "runs": 14,
+        "tokens": 96000,
+        "costUsd": 0.21
+      }
+    },
+    {
+      "id": "brd",
+      "name": "BRD writer",
+      "role": "Sonnet tier",
+      "description": "Map-reduce BRD: one subsystem per map call, reduced with an evidence map.",
+      "model": "claude-sonnet-4-6",
+      "usage": {
+        "runs": 9,
+        "tokens": 1210000,
+        "costUsd": 3.84
+      }
+    },
+    {
+      "id": "judge",
+      "name": "Judge",
+      "role": "Opus tier",
+      "description": "Scores BRD and designs on five dimensions; drives the improve loop.",
+      "model": "claude-opus-4-8",
+      "usage": {
+        "runs": 5,
+        "tokens": 380000,
+        "costUsd": 2.95
+      }
+    },
+    {
+      "id": "seam",
+      "name": "Seam narrator",
+      "role": "Sonnet tier",
+      "description": "Explains ranked seams in business terms (scores stay pure Cypher).",
+      "model": "claude-sonnet-4-6",
+      "usage": {
+        "runs": 1,
+        "tokens": 88000,
+        "costUsd": 0.34
+      }
+    },
+    {
+      "id": "story",
+      "name": "Story writer",
+      "role": "Sonnet tier",
+      "description": "Epics first, then INVEST stories and acceptance criteria per epic.",
+      "model": "claude-sonnet-4-6",
+      "usage": {
+        "runs": 4,
+        "tokens": 305000,
+        "costUsd": 1.12
+      }
+    },
+    {
+      "id": "design",
+      "name": "Designer",
+      "role": "Opus tier",
+      "description": "Bounded contexts, topology decision, tactical DDD and technical design.",
+      "model": "claude-opus-4-8",
+      "usage": {
+        "runs": 7,
+        "tokens": 520000,
+        "costUsd": 4.1
+      }
+    },
+    {
+      "id": "codegen",
+      "name": "Codegen",
+      "role": "Sonnet tier",
+      "description": "Generates story tests and minimal Spring Boot implementation.",
+      "model": "claude-sonnet-4-6",
+      "usage": {
+        "runs": 6,
+        "tokens": 690000,
+        "costUsd": 2.48
+      }
+    },
+    {
+      "id": "repair",
+      "name": "Repair",
+      "role": "Opus tier",
+      "description": "Re-generates the implementation from the failing Maven log (bounded attempts).",
+      "model": "claude-opus-4-8",
+      "usage": {
+        "runs": 3,
+        "tokens": 240000,
+        "costUsd": 2.21
+      }
+    },
+    {
+      "id": "advisor",
+      "name": "Advisor",
+      "role": "Opus tier",
+      "description": "Budgeted escalation for hard calls (ADVISOR_MAX_USES).",
+      "model": "claude-opus-4-8",
+      "usage": {
+        "runs": 1,
+        "tokens": 41000,
+        "costUsd": 0.53
+      }
+    },
+    {
+      "id": "equivalence_triage",
+      "name": "Equivalence triage",
+      "role": "Haiku tier",
+      "description": "Optional narrative over equivalence mismatches.",
+      "model": "claude-haiku-4-5-20251001",
+      "usage": {
+        "runs": 0,
+        "tokens": 0,
+        "costUsd": 0
+      }
+    }
+  ],
+  "position": {
+    "state": "running",
+    "phaseKey": "migrate",
+    "stepKey": "build",
+    "workItemId": "STORY-005",
+    "summary": "STORY-005 Post transactions & update balances is running (attempt 2)."
+  },
+  "epics": [
+    {
+      "id": "EPIC-01",
+      "title": "Account Management",
+      "summary": "Agents can view and maintain accounts on the new platform with results identical to CICS."
+    },
+    {
+      "id": "EPIC-02",
+      "title": "Transaction Posting",
+      "summary": "Daily transactions are validated and posted with balances matching the COBOL batch to the cent."
+    },
+    {
+      "id": "EPIC-03",
+      "title": "Card Management",
+      "summary": "Cards linked to an account can be listed, inspected and updated through the new API."
+    }
+  ],
+  "workItems": [
+    {
+      "id": "STORY-001",
+      "title": "View account summary",
+      "status": "done",
+      "rawStatus": "passed",
+      "epicId": "EPIC-01",
+      "group": "Account",
+      "agentId": "codegen",
+      "verified": true,
+      "description": "As a customer service agent, I want to view an account's balance, limits and linked customer so that I can answer customer queries.",
+      "acceptanceCriteria": [
+        {
+          "id": "AC-001-1",
+          "text": "Given a valid account id, the summary returns current balance, credit limit and cash limit.",
+          "covered": true
+        },
+        {
+          "id": "AC-001-2",
+          "text": "Given an unknown account id, the API returns 404 'Account not found'.",
+          "covered": true
+        },
+        {
+          "id": "AC-001-3",
+          "text": "The linked customer's name and address come from the customer record.",
+          "covered": true
+        }
+      ],
+      "gates": [
+        {
+          "label": "Story quality gate",
+          "status": "done"
+        }
+      ]
+    },
+    {
+      "id": "STORY-004",
+      "title": "Validate daily transactions",
+      "status": "done",
+      "rawStatus": "passed",
+      "epicId": "EPIC-02",
+      "group": "Posting",
+      "agentId": "codegen",
+      "verified": true,
+      "description": "As the posting batch, I want each daily transaction validated against its card and account so that invalid transactions are rejected before posting.",
+      "acceptanceCriteria": [
+        {
+          "id": "AC-004-1",
+          "text": "A card number with no cross-reference is rejected with reason 100.",
+          "covered": true
+        },
+        {
+          "id": "AC-004-2",
+          "text": "A transaction exceeding the credit limit is rejected with reason 102.",
+          "covered": true
+        },
+        {
+          "id": "AC-004-3",
+          "text": "A transaction after account expiry is rejected with reason 103.",
+          "covered": true
+        }
+      ],
+      "gates": [
+        {
+          "label": "Story quality gate",
+          "status": "done"
+        }
+      ]
+    },
+    {
+      "id": "STORY-002",
+      "title": "Update account details",
+      "status": "done",
+      "rawStatus": "passed",
+      "epicId": "EPIC-01",
+      "group": "Account",
+      "agentId": "codegen",
+      "verified": true,
+      "description": "As an account administrator, I want to update credit limits and account status with validation so that account data stays consistent.",
+      "acceptanceCriteria": [
+        {
+          "id": "AC-002-1",
+          "text": "A credit limit below the current balance is rejected.",
+          "covered": true
+        },
+        {
+          "id": "AC-002-2",
+          "text": "Account status accepts only 'Y' (active) or 'N' (inactive).",
+          "covered": true
+        },
+        {
+          "id": "AC-002-3",
+          "text": "A successful update persists and returns the updated record.",
+          "covered": true
+        }
+      ],
+      "dependsOn": [
+        "STORY-001"
+      ],
+      "gates": [
+        {
+          "label": "Story quality gate",
+          "status": "done"
+        }
+      ],
+      "note": "Attempt 1 failed ArchUnit (controller → repository); repair routed through AccountUpdateService."
+    },
+    {
+      "id": "STORY-003",
+      "title": "Batch account export",
+      "status": "done",
+      "rawStatus": "generated-unverified",
+      "epicId": "EPIC-01",
+      "group": "Account",
+      "agentId": "codegen",
+      "verified": false,
+      "description": "As operations, I want the account file export to run on the new platform so that downstream reports keep working.",
+      "acceptanceCriteria": [
+        {
+          "id": "AC-003-1",
+          "text": "Every account record is written with the same layout as the COBOL OUTFILE.",
+          "covered": true
+        },
+        {
+          "id": "AC-003-2",
+          "text": "COMP-3 amounts are exported with identical scale and sign.",
+          "covered": true
+        }
+      ],
+      "dependsOn": [
+        "STORY-001"
+      ],
+      "gates": [
+        {
+          "label": "Story quality gate",
+          "status": "done",
+          "detail": "COBOL behavior-model signals are not represented in generated files"
+        }
+      ],
+      "note": "Maven/JDK unavailable on host: accepted as generated-unverified."
+    },
+    {
+      "id": "STORY-005",
+      "title": "Post transactions & update balances",
+      "status": "active",
+      "rawStatus": "running",
+      "epicId": "EPIC-02",
+      "group": "Posting",
+      "agentId": "codegen",
+      "verified": false,
+      "description": "As the posting batch, I want valid transactions posted and account and category balances updated so that balances match the legacy system.",
+      "acceptanceCriteria": [
+        {
+          "id": "AC-005-1",
+          "text": "Posting a transaction adds its amount to the account's current balance.",
+          "covered": true
+        },
+        {
+          "id": "AC-005-2",
+          "text": "A category balance record is created on first use and accumulated afterwards.",
+          "covered": true
+        },
+        {
+          "id": "AC-005-3",
+          "text": "Each posted transaction is written to the transaction file.",
+          "covered": true
+        }
+      ],
+      "dependsOn": [
+        "STORY-004"
+      ],
+      "gates": [
+        {
+          "label": "Story quality gate",
+          "status": "blocked",
+          "detail": "tests still failing after implementation; COBOL behavior-model signals are not represented in generated files"
+        }
+      ],
+      "note": "CategoryBalanceTest: no record created on first posting (COBOL 2700-A-CREATE-TCATBAL-REC on INVALID KEY). Repair attempt 2 of 3 running."
+    },
+    {
+      "id": "STORY-006",
+      "title": "List transactions with paging",
+      "status": "pending",
+      "rawStatus": "pending",
+      "epicId": "EPIC-02",
+      "group": "Posting",
+      "agentId": "codegen",
+      "verified": false,
+      "description": "As a customer service agent, I want to browse an account's transactions page by page so that I can investigate disputes.",
+      "acceptanceCriteria": [
+        {
+          "id": "AC-006-1",
+          "text": "Transactions are returned 10 per page.",
+          "covered": false
+        },
+        {
+          "id": "AC-006-2",
+          "text": "Paging past the last page returns an empty page, not an error.",
+          "covered": false
+        }
+      ],
+      "dependsOn": [
+        "STORY-005"
+      ]
+    },
+    {
+      "id": "STORY-007",
+      "title": "List cards for an account",
+      "status": "pending",
+      "rawStatus": "pending",
+      "epicId": "EPIC-03",
+      "group": "Card",
+      "agentId": "codegen",
+      "verified": false,
+      "description": "As a customer service agent, I want to list all cards linked to an account so that I can pick the one a customer is calling about.",
+      "acceptanceCriteria": [
+        {
+          "id": "AC-007-1",
+          "text": "All cards cross-referenced to the account are returned, filtered as on the CICS screen.",
+          "covered": false
+        }
+      ],
+      "dependsOn": [
+        "STORY-001"
+      ]
+    },
+    {
+      "id": "STORY-008",
+      "title": "View card details",
+      "status": "pending",
+      "rawStatus": "pending",
+      "epicId": "EPIC-03",
+      "group": "Card",
+      "agentId": "codegen",
+      "verified": false,
+      "description": "As a customer service agent, I want to view a card's status, expiry and embossed name so that I can verify the cardholder.",
+      "acceptanceCriteria": [
+        {
+          "id": "AC-008-1",
+          "text": "Card details are returned for a valid account + card pair; unknown cards return 404.",
+          "covered": false
+        }
+      ],
+      "dependsOn": [
+        "STORY-007"
+      ]
+    },
+    {
+      "id": "STORY-009",
+      "title": "Update card status & expiry",
+      "status": "pending",
+      "rawStatus": "pending",
+      "epicId": "EPIC-03",
+      "group": "Card",
+      "agentId": "codegen",
+      "verified": false,
+      "description": "As an account administrator, I want to update a card's status and expiry date with validation so that lost or renewed cards are handled.",
+      "acceptanceCriteria": [
+        {
+          "id": "AC-009-1",
+          "text": "Expiry month must be 1–12 and the expiry year must be valid.",
+          "covered": false
+        },
+        {
+          "id": "AC-009-2",
+          "text": "Card status accepts only 'Y' or 'N'.",
+          "covered": false
+        }
+      ],
+      "dependsOn": [
+        "STORY-008"
+      ]
+    }
+  ],
+  "progressWeights": {
+    "steps": 0.4,
+    "workItems": 0.6
+  },
+  "artifacts": [
+    {
+      "label": "Outcome statement",
+      "path": "inline://outcome",
+      "stepKey": "outcome"
+    },
+    {
+      "label": "Code graph snapshot",
+      "path": "neo4j://repo/aws-mf-mod-carddemo",
+      "stepKey": "graph"
+    },
+    {
+      "label": "Business Requirements Document",
+      "path": "brd_output/brd/aws-mf-mod-carddemo/v3.html",
+      "stepKey": "blueprint"
+    },
+    {
+      "label": "Backlog (epics & stories)",
+      "path": "neo4j://backlog/aws-mf-mod-carddemo/v2",
+      "stepKey": "backlog"
+    },
+    {
+      "label": "Ranked seams",
+      "path": "inline://seams",
+      "stepKey": "seams"
+    },
+    {
+      "label": "Story plan (DAG)",
+      "path": "inline://story_dag",
+      "stepKey": "plan"
+    },
+    {
+      "label": "Domain design",
+      "path": "neo4j://domain_design/aws-mf-mod-carddemo/v2",
+      "stepKey": "domain"
+    },
+    {
+      "label": "Technical design",
+      "path": "inline://technical_design",
+      "stepKey": "design"
+    },
+    {
+      "label": "Story codegen plan",
+      "path": "inline://story_codegen_plan",
+      "stepKey": "build"
+    },
+    {
+      "label": "Story codegen status",
+      "path": "inline://story_codegen_status",
+      "stepKey": "build"
+    },
+    {
+      "label": "Generated test references",
+      "path": "inline://generated_test_refs",
+      "stepKey": "build"
+    },
+    {
+      "label": "Spring Boot module",
+      "path": "codegen_output/aws-mf-mod-carddemo",
+      "stepKey": "build"
+    }
+  ],
+  "traceability": [
+    {
+      "id": "REQ-001",
+      "title": "View account balance, limits and customer",
+      "state": "complete"
+    },
+    {
+      "id": "REQ-002",
+      "title": "Maintain account details and export the account file",
+      "state": "complete"
+    },
+    {
+      "id": "RULE-001",
+      "title": "Account edits are validated before write",
+      "state": "complete"
+    },
+    {
+      "id": "REQ-003",
+      "title": "Validate and browse daily transactions",
+      "state": "in_progress"
+    },
+    {
+      "id": "RULE-002",
+      "title": "Reject unknown-card, over-limit and expired-account transactions",
+      "state": "complete"
+    },
+    {
+      "id": "REQ-004",
+      "title": "Post transactions and update account balances",
+      "state": "in_progress"
+    },
+    {
+      "id": "RULE-003",
+      "title": "Category balance created on first use, then accumulated",
+      "state": "in_progress"
+    },
+    {
+      "id": "REQ-005",
+      "title": "List and view cards linked to an account",
+      "state": "in_progress"
+    },
+    {
+      "id": "REQ-006",
+      "title": "Update card status and expiry",
+      "state": "in_progress"
+    },
+    {
+      "id": "RULE-004",
+      "title": "Card expiry month 1–12 and a valid year",
+      "state": "in_progress"
+    }
+  ],
+  "timeline": [
+    {
+      "at": "2026-09-01T10:40:00-04:00",
+      "summary": "Parsed 31 / 31 programs with ProLeap, 0 errors.",
+      "level": "success",
+      "phaseKey": "understand",
+      "stepKey": "parse"
+    },
+    {
+      "at": "2026-09-01T11:20:00-04:00",
+      "summary": "Graph ingested: 4,812 nodes, 11,406 edges.",
+      "level": "success",
+      "phaseKey": "understand",
+      "stepKey": "graph"
+    },
+    {
+      "at": "2026-09-02T10:18:00-04:00",
+      "summary": "Subsystem batch-reporting timed out; retried with smaller chunks and succeeded.",
+      "level": "warning",
+      "agentId": "brd",
+      "phaseKey": "design",
+      "stepKey": "blueprint"
+    },
+    {
+      "at": "2026-09-04T14:55:00-04:00",
+      "summary": "BRD v3 judged: weighted 4.7 / 5, rated high (bar 4.2).",
+      "level": "success",
+      "agentId": "judge",
+      "phaseKey": "design",
+      "stepKey": "blueprint"
+    },
+    {
+      "at": "2026-09-04T15:35:00-04:00",
+      "summary": "Gate brd_groundedness approved by tech_lead.",
+      "level": "success",
+      "phaseKey": "design",
+      "stepKey": "blueprint"
+    },
+    {
+      "at": "2026-09-06T12:10:00-04:00",
+      "summary": "Backlog v2: 3 epics, 9 stories, 20 ACs; 10 / 10 requirements covered.",
+      "level": "success",
+      "agentId": "story",
+      "phaseKey": "design",
+      "stepKey": "backlog"
+    },
+    {
+      "at": "2026-09-07T14:45:00-04:00",
+      "summary": "Story DAG built: 9 stories, 7 edges, acyclic.",
+      "level": "success",
+      "phaseKey": "design",
+      "stepKey": "plan"
+    },
+    {
+      "at": "2026-09-09T12:30:00-04:00",
+      "summary": "Data-ownership gate failed: CARDXREF owned by Account and Card.",
+      "level": "error",
+      "agentId": "design",
+      "phaseKey": "design",
+      "stepKey": "domain"
+    },
+    {
+      "at": "2026-09-09T15:10:00-04:00",
+      "summary": "Domain design v2: CARDXREF moved to Card; Posting recommended as microservice.",
+      "level": "success",
+      "agentId": "design",
+      "phaseKey": "design",
+      "stepKey": "domain"
+    },
+    {
+      "at": "2026-09-12T14:20:00-04:00",
+      "summary": "Gate design_data_ownership approved by architect.",
+      "level": "success",
+      "phaseKey": "design",
+      "stepKey": "design"
+    },
+    {
+      "at": "2026-09-17T13:39:32-04:00",
+      "summary": "STORY-001 passed: red → green in 1 attempt, 6 / 6 tests.",
+      "level": "success",
+      "agentId": "codegen",
+      "phaseKey": "migrate",
+      "stepKey": "build"
+    },
+    {
+      "at": "2026-09-23T10:14:14-04:00",
+      "summary": "STORY-004 passed: reject reasons 100 / 102 / 103 match CBTRN02C.",
+      "level": "success",
+      "agentId": "codegen",
+      "phaseKey": "migrate",
+      "stepKey": "build"
+    },
+    {
+      "at": "2026-09-24T11:06:28-04:00",
+      "summary": "STORY-002 passed after repair: ArchUnit layering fixed.",
+      "level": "success",
+      "agentId": "repair",
+      "phaseKey": "migrate",
+      "stepKey": "build"
+    },
+    {
+      "at": "2026-09-29T15:12:00-04:00",
+      "summary": "STORY-003 generated-unverified: Maven unavailable on host.",
+      "level": "warning",
+      "agentId": "codegen",
+      "phaseKey": "migrate",
+      "stepKey": "build"
+    },
+    {
+      "at": "2026-09-30T09:31:00-04:00",
+      "summary": "STORY-005 GREEN run: 2 failures in CategoryBalanceAcceptanceTest.",
+      "level": "error",
+      "agentId": "codegen",
+      "phaseKey": "migrate",
+      "stepKey": "build"
+    },
+    {
+      "at": "2026-09-30T10:05:00-04:00",
+      "summary": "STORY-005 repair attempt 2 / 3: mirror 2700-A-CREATE-TCATBAL-REC on missing key.",
+      "level": "info",
+      "agentId": "repair",
+      "phaseKey": "migrate",
+      "stepKey": "build"
+    }
+  ],
+  "metrics": [
+    {
+      "group": "Delivery",
+      "label": "Stories accepted",
+      "value": "4 / 9",
+      "hint": "passed, generated-unverified or skipped"
+    },
+    {
+      "group": "Delivery",
+      "label": "Acceptance criteria covered",
+      "value": "14 / 20",
+      "hint": "cited by a generated test"
+    },
+    {
+      "group": "Delivery",
+      "label": "Story tests passing",
+      "value": "33 / 35"
+    },
+    {
+      "group": "Quality",
+      "label": "BRD judge",
+      "value": "4.7 / 5 (high)"
+    },
+    {
+      "group": "Quality",
+      "label": "COBOL ↔ Java equivalence",
+      "value": "pending"
+    },
+    {
+      "group": "Budget",
+      "label": "Spend",
+      "value": "$18.40 / $50.00",
+      "hint": "37% of the workspace cap"
+    },
+    {
+      "group": "Source: COBOL estate",
+      "label": "COBOL programs",
+      "value": "31"
+    },
+    {
+      "group": "Source: COBOL estate",
+      "label": "Copybooks",
+      "value": "30"
+    },
+    {
+      "group": "Source: COBOL estate",
+      "label": "BMS copybooks",
+      "value": "17"
+    },
+    {
+      "group": "Source: COBOL estate",
+      "label": "BMS screen maps",
+      "value": "17"
+    },
+    {
+      "group": "Source: COBOL estate",
+      "label": "JCL members",
+      "value": "38"
+    },
+    {
+      "group": "Source: COBOL estate",
+      "label": "CICS programs",
+      "value": "17"
+    },
+    {
+      "group": "Source: COBOL estate",
+      "label": "COBOL lines",
+      "value": "20,650"
+    }
+  ],
+  "missing": [
+    {
+      "what": "Everything",
+      "needs": "Illustrative sample. Program, paragraph and file names are real CardDemo names; progress, costs and dates are made up."
+    }
+  ]
+}

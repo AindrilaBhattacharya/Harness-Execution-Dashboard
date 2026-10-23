@@ -1,0 +1,4 @@
+[
+  { "key": "cobol-java", "label": "COBOL → Java harness" },
+  { "key": "custom", "label": "Any harness (run file)" }
+]

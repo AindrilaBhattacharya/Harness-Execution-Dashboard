@@ -1,0 +1,19 @@
+[[epic]]
+id = 1
+slug = "epic-batch-ingestion"
+title = "Batch ingestion runs on PySpark"
+covers = ["R1", "R2"]
+
+[[epic]]
+id = 2
+slug = "epic-ledger-posting"
+title = "Ledger posting matches PL/SQL to the cent"
+covers = ["R3", "R4"]
+after = [{ epic = 1, needs = "ingested daily transactions in Delta tables" }]
+
+[[epic]]
+id = 3
+slug = "epic-reporting"
+title = "Month-end reports from the new ledger"
+covers = ["R5"]
+after = [{ epic = 2, needs = "posted ledger balances" }]

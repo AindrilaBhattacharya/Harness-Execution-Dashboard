@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "harness": {
+    "id": "bmad",
+    "name": "BMAD Method",
+    "tagline": "Agent-assisted delivery · analysis to validation",
+    "traits": [
+      {
+        "label": "Method",
+        "value": "BMAD v7"
+      },
+      {
+        "label": "Repo",
+        "value": "BMAD-METHOD-main (method definition, no project output)"
+      }
+    ],
+    "workItemLabel": "Tickets",
+    "epicLabel": "Epics"
+  },
+  "project": {
+    "name": "BMAD-METHOD-main",
+    "path": "d:/my-stuff/work-stuff/BMAD-METHOD-main"
+  },
+  "importedAt": "2026-10-23T08:14:04.219Z",
+  "phases": [
+    {
+      "key": "analysis",
+      "label": "Analysis",
+      "summary": "Explore the idea before committing: research, a brief or a PRFAQ.",
+      "steps": [
+        {
+          "key": "brainstorming",
+          "label": "Brainstorming",
+          "agentIds": [
+            "analyst"
+          ],
+          "optional": true,
+          "status": "pending"
+        },
+        {
+          "key": "research",
+          "label": "Research",
+          "agentIds": [
+            "analyst"
+          ],
+          "optional": true,
+          "status": "pending"
+        },
+        {
+          "key": "brief",
+          "label": "Product brief",
+          "agentIds": [
+            "analyst"
+          ],
+          "status": "pending"
+        },
+        {
+          "key": "prfaq",
+          "label": "PRFAQ",
+          "agentIds": [
+            "analyst"
+          ],
+          "optional": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "planning",
+      "label": "Planning",
+      "summary": "Distil what to build into a spec, with a PRD, UX and architecture as needed, then break it into tickets.",
+      "steps": [
+        {
+          "key": "spec",
+          "label": "Spec",
+          "agentIds": [],
+          "status": "pending"
+        },
+        {
+          "key": "prd",
+          "label": "PRD",
+          "agentIds": [
+            "pm"
+          ],
+          "optional": true,
+          "status": "pending"
+        },
+        {
+          "key": "ux",
+          "label": "UX design",
+          "agentIds": [
+            "ux-designer"
+          ],
+          "optional": true,
+          "status": "pending"
+        },
+        {
+          "key": "architecture",
+          "label": "Architecture",
+          "agentIds": [
+            "architect"
+          ],
+          "optional": true,
+          "status": "pending"
+        },
+        {
+          "key": "tickets",
+          "label": "Tickets",
+          "agentIds": [
+            "pm",
+            "architect",
+            "dev"
+          ],
+          "output": "tickets.toml",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "implementation",
+      "label": "Implementation",
+      "summary": "Build each ticket in order; correct course when plans change.",
+      "steps": [
+        {
+          "key": "build",
+          "label": "Build tickets",
+          "agentIds": [
+            "dev"
+          ],
+          "output": "ticket plans",
+          "status": "pending"
+        },
+        {
+          "key": "correct-course",
+          "label": "Correct course",
+          "agentIds": [
+            "pm"
+          ],
+          "optional": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "key": "validation",
+      "label": "Validation",
+      "summary": "Review what was built, test it end to end, and close each epic with a retrospective.",
+      "steps": [
+        {
+          "key": "code-review",
+          "label": "Code review",
+          "agentIds": [
+            "dev"
+          ],
+          "status": "pending"
+        },
+        {
+          "key": "walkthrough",
+          "label": "Walkthrough",
+          "agentIds": [],
+          "optional": true,
+          "status": "pending"
+        },
+        {
+          "key": "qa",
+          "label": "QA end-to-end tests",
+          "agentIds": [
+            "dev"
+          ],
+          "optional": true,
+          "status": "pending"
+        },
+        {
+          "key": "retrospective",
+          "label": "Retrospective",
+          "agentIds": [
+            "dev"
+          ],
+          "status": "pending"
+        }
+      ]
+    }
+  ],
+  "agents": [
+    {
+      "id": "analyst",
+      "name": "Mary",
+      "role": "Business Analyst",
+      "icon": "📊",
+      "description": "Business analyst for market research, competitive analysis, and requirements."
+    },
+    {
+      "id": "pm",
+      "name": "John",
+      "role": "Product Manager",
+      "icon": "📋",
+      "description": "Product manager for PRD creation and requirements discovery."
+    },
+    {
+      "id": "ux-designer",
+      "name": "Sally",
+      "role": "UX Designer",
+      "icon": "🎨",
+      "description": "UX designer and UI specialist."
+    },
+    {
+      "id": "architect",
+      "name": "Winston",
+      "role": "System Architect",
+      "icon": "🏗️",
+      "description": "System architect and technical design leader."
+    },
+    {
+      "id": "dev",
+      "name": "Amelia",
+      "role": "Senior Software Engineer",
+      "icon": "💻",
+      "description": "Senior software engineer who implements stories and code changes."
+    }
+  ],
+  "position": {
+    "state": "not_started",
+    "phaseKey": "analysis",
+    "stepKey": "brief",
+    "summary": "No BMAD output yet."
+  },
+  "epics": [],
+  "workItems": [],
+  "artifacts": [],
+  "timeline": [],
+  "metrics": [
+    {
+      "group": "Ticket tree",
+      "label": "Epics",
+      "value": "0 / 0 done"
+    }
+  ],
+  "missing": [
+    {
+      "what": "Which agent is active right now",
+      "needs": "nothing BMAD records; the position is worked out from the output files"
+    },
+    {
+      "what": "Tickets",
+      "needs": "_bmad-output/tickets.toml, written by bmad-ticket"
+    }
+  ]
+}
