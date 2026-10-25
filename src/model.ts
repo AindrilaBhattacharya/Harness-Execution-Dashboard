@@ -1,7 +1,7 @@
 // What any forward-engineering harness looks like to this dashboard: its phases (made of
-// steps), its agents, and where the run is now. Every harness is translated into this one
-// shape, either by an importer in scripts/readers/ or by the harness writing it directly
-// (see README "Describe any harness"). The dashboard has no harness-specific code.
+// steps), its agents, and where the run is now. A harness either writes this shape itself
+// (see README "Describe any harness") or the discovery engine (src/discover/) works it out
+// from the harness's files. The dashboard has no harness-specific code.
 //
 // Derived values (phase progress, which agents are working) are computed in src/lib/derive.ts,
 // never stored, so they cannot disagree with the records.
@@ -20,7 +20,7 @@ export type Provenance = "observed" | "derived" | "inferred";
 export interface HarnessRun {
   schemaVersion: 1;
   harness: {
-    id: string; // "bmad", "cobol-java", …
+    id: string;
     name: string;
     tagline?: string;
     /** What kind of harness this is, shown as chips: method, source, target, … */
@@ -34,8 +34,8 @@ export interface HarnessRun {
   importedAt: string;
   /** Illustrative data; always labelled as such. */
   sample?: boolean;
-  /** Read live from a running harness's API, not from a file. */
-  live?: { api: string; workspace: string; refreshedAt: string };
+  /** How this run was obtained, when the discovery engine produced it. */
+  discovery?: Discovery;
   timezone?: string;
   phases: Phase[];
   agents: Agent[];
@@ -185,4 +185,19 @@ export interface Metric {
   tone?: "good" | "bad";
   /** Heading the metric is shown under, e.g. "Source" or "Target". */
   group?: string;
+}
+
+/**
+ * run-file   – the harness wrote this run itself
+ * state-file – read from a state file the harness keeps (stages, phases, roles, stories…)
+ * files      – worked out from the harness's agent definitions and output folders
+ */
+export interface Discovery {
+  method: "run-file" | "state-file" | "files";
+  /** The folder, file or GitHub link that was read. */
+  source: string;
+  /** The run or state file, relative to the source. */
+  file?: string;
+  readAt: string;
+  notes?: string[];
 }

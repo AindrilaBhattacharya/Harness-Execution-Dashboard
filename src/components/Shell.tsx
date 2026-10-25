@@ -1,13 +1,13 @@
 // The frame around every view: sidebar, header chips, data banner, KPI tiles, the "now" card
-// and the tab bar. Same look as the Forward Engineering Dashboard.
+// and the tab bar.
 import { useState, type ReactNode } from "react";
-import { Braces, ChevronDown, Database, FileDown, FlaskConical, Loader2, Workflow } from "lucide-react";
+import { Braces, ChevronDown, Database, FileDown, FlaskConical, FolderInput, Globe, Loader2, Workflow } from "lucide-react";
 import type { Agent, HarnessRun } from "../model";
 import {
   AGENT_STATE, agentById, agentState, computeKpis, currentPhase, currentStep, display, overallProgress, phaseLabel, phaseProgress, phaseStatus, stageSteps,
 } from "../lib/derive";
 import { formatDateTime, timeAgo } from "../lib/format";
-import type { SampleRef } from "../lib/useRun";
+import type { Choice } from "../lib/harnessSource";
 import { STATUS_DOT, StatusPill } from "./ui";
 
 export function Sidebar({ run }: { run: HarnessRun }) {
@@ -118,7 +118,7 @@ function Chip({ label, children, mono = false }: { label: string; children: Reac
   );
 }
 
-export function HeaderBar({ run, now }: { run: HarnessRun; now: Date }) {
+export function HeaderBar({ run, now, live, onLoad }: { run: HarnessRun; now: Date; live: boolean; onLoad: () => void }) {
   const downloadJson = () => {
     const blob = new Blob([JSON.stringify(run, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -135,75 +135,64 @@ export function HeaderBar({ run, now }: { run: HarnessRun; now: Date }) {
       <Chip label="Project">{run.project.name}</Chip>
       {run.harness.traits?.map((t) => <Chip key={t.label} label={t.label}>{t.value}</Chip>)}
       <Chip label="Times in">{run.timezone ?? "UTC"}</Chip>
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-        <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
-        Live · updated {timeAgo(run.importedAt, now)}
-      </span>
+      {live ? (
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
+          Live · updated {timeAgo(run.importedAt, now)}
+        </span>
+      ) : (
+        <Chip label="Read">{timeAgo(run.importedAt, now)}</Chip>
+      )}
+      <button onClick={onLoad} className={btn}><FolderInput className="h-3.5 w-3.5" /> Load harness</button>
       <button onClick={() => window.print()} className={btn}><FileDown className="h-3.5 w-3.5" /> Export PDF</button>
       <button onClick={downloadJson} className={btn}><Braces className="h-3.5 w-3.5" /> JSON</button>
     </header>
   );
 }
 
-/** States plainly whether this is sample or imported data, and what the input did not contain. */
-export function DataBanner({ run, samples, sampleKey, fellBackToSample, liveError }: { run: HarnessRun; samples: SampleRef[]; sampleKey?: string; fellBackToSample: boolean; liveError?: string }) {
+/** States plainly where the run came from, how it was worked out, and what the input did not contain. */
+export function DataBanner({ run, choice, refreshMs, error, onLoad, onClear }: {
+  run: HarnessRun; choice?: Choice; refreshMs: number; error?: string; onLoad: () => void; onClear: () => void;
+}) {
   const [open, setOpen] = useState(false);
   const missing = run.missing ?? [];
-  const switcher = (
-    <span className="no-print ml-auto flex flex-wrap items-center gap-1.5">
-      {samples.map((s) => (
-        <a key={s.key} href={`?data=${s.key}`} className={`rounded-full px-2 py-0.5 font-semibold ring-1 ${s.key === sampleKey ? "bg-white ring-current" : "ring-transparent hover:underline"}`}>
-          {s.label}
-        </a>
-      ))}
-      {sampleKey && <a href="./" className="font-semibold underline">{run.live ? "Live harness" : "Imported run"}</a>}
-    </span>
-  );
-  // Shown when the live harness was tried and did not answer, so the page fell back to a file.
-  const offline = liveError && (
-    <div className="mt-1 text-[11px] opacity-80">Live harness not reachable ({liveError}), so this is read from a file.</div>
-  );
-
-  if (run.sample) {
-    return (
-      <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-xs text-amber-900">
-        <div className="flex flex-wrap items-center gap-2">
-          <FlaskConical className="h-4 w-4" />
-          <b>Sample data.</b>
-          {fellBackToSample ? "No imported run found, so an illustrative sample is shown." : "Illustrative only."}
-          {switcher}
-        </div>
-        {offline}
-      </div>
-    );
-  }
+  const notes = run.discovery?.notes ?? [];
+  const d = run.discovery;
+  const how = !d ? <>imported {formatDateTime(run.importedAt, run.timezone ?? "UTC")}</>
+    : d.method === "run-file" ? <>the run file <code className="font-mono">{d.file}</code> the harness wrote</>
+    : d.method === "state-file" ? <>the harness's state file <code className="font-mono">{d.file}</code></>
+    : <>worked out from its files: agent definitions, output folders and status fields</>;
+  const every = refreshMs >= 60_000 ? `every ${Math.round(refreshMs / 60_000)} min` : `every ${Math.round(refreshMs / 1000)} s`;
+  const link = "no-print font-semibold underline-offset-2 hover:underline";
+  const tone = run.sample ? "border-amber-300 bg-amber-50 text-amber-900" : "border-emerald-300 bg-emerald-50 text-emerald-950";
+  const Icon = run.sample ? FlaskConical : choice?.kind === "github" ? Globe : Database;
   return (
-    <div className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-xs text-emerald-950">
-      <div className="flex flex-wrap items-center gap-2">
-        {run.live ? <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-500" /> : <Database className="h-4 w-4 text-emerald-700" />}
-        <b>{run.live ? "Live harness" : "Imported run"}</b>
-        {run.live ? (
-          <span>
-            read from the harness API (<code className="font-mono">{run.live.api}</code>), workspace <code className="font-mono">{run.project.name}</code>, every 5 seconds.
-          </span>
-        ) : (
-          <span>
-            {run.project.path && <>from <code className="font-mono">{run.project.path}</code>, </>}imported {formatDateTime(run.importedAt, run.timezone ?? "UTC")}.
-          </span>
-        )}
-        {missing.length > 0 && (
-          <button onClick={() => setOpen((v) => !v)} className="no-print inline-flex items-center gap-1 font-semibold text-emerald-800 hover:underline" aria-expanded={open}>
-            {missing.length} things not in this input <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+    <div className={`rounded-xl border px-4 py-2.5 text-xs ${tone}`}>
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <Icon className="h-4 w-4 shrink-0 opacity-80" />
+        <b>{run.sample ? "Sample data." : choice ? "Read in this browser" : "From this dashboard's server"}</b>
+        <span className="min-w-0">
+          {d?.source && <>from <code className="break-all font-mono">{d.source}</code>, </>}
+          {how}. {refreshMs > 0 ? `Re-read ${every}.` : "Read once; load it again to refresh."}
+        </span>
+        {(missing.length > 0 || notes.length > 0) && (
+          <button onClick={() => setOpen((v) => !v)} className={`${link} inline-flex items-center gap-1`} aria-expanded={open}>
+            {missing.length ? `${missing.length} thing${missing.length === 1 ? "" : "s"} not found` : "Notes"}
+            <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
           </button>
         )}
-        {switcher}
+        <span className="ml-auto flex items-center gap-3">
+          <button onClick={onLoad} className={link}>Load another</button>
+          {choice && <button onClick={onClear} className={link}>Back to the server's run</button>}
+        </span>
       </div>
-      {offline}
+      {error && <div className="mt-1 text-[11px] text-rose-700">Last refresh failed ({error}); showing the previous reading.</div>}
       {open && (
-        <ul className="mt-2 grid gap-1 border-t border-emerald-200 pt-2 sm:grid-cols-2">
+        <ul className="mt-2 grid gap-1 border-t border-current/20 pt-2 sm:grid-cols-2">
           {missing.map((m) => (
-            <li key={m.what}><b>{m.what}</b> <span className="text-emerald-800">needs {m.needs}</span></li>
+            <li key={m.what}><b>{m.what}</b> <span className="opacity-80">needs {m.needs}</span></li>
           ))}
+          {notes.map((n) => <li key={n} className="opacity-80">{n}</li>)}
         </ul>
       )}
     </div>
@@ -220,7 +209,7 @@ function Tile({ label, value, hint, tone = "default" }: { label: string; value: 
   );
 }
 
-/** The Forward Engineering Dashboard's eight tiles. "—" = the harness does not record that kind of thing. */
+/** The eight headline tiles. "—" = the harness does not record that kind of thing. */
 export function KpiTiles({ run }: { run: HarnessRun }) {
   const k = computeKpis(run);
   const noun = run.harness.workItemLabel ?? "Work items";
