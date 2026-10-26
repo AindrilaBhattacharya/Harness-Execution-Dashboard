@@ -28,6 +28,10 @@ npm run build    # typecheck + production build into dist/
 npm test         # discovery engine tests
 ```
 
+The port is fixed: if 8789 is already in use (another dashboard is running), `npm run dev`
+stops with an error instead of moving to another port. Stop the other one, or pick a port
+with `PORT=8790 npm run dev`.
+
 Open the page and use **Load harness**:
 
 - **From this computer:** choose or drop a harness's folder, or one of its files (a run file

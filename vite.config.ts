@@ -49,8 +49,10 @@ function harnessFrom(from: string): Plugin {
 const from = process.env.HARNESS_FROM;
 const port = Number(process.env.PORT ?? 8789);
 
+// strictPort: a busy port is an error, not a silent move to the next one, so a dashboard is
+// always where you expect it. Run another one with PORT=<port>.
 export default defineConfig({
   plugins: [react(), ...(from ? [harnessFrom(from)] : [])],
-  server: { port, strictPort: !!process.env.PORT },
-  preview: { port },
+  server: { port, strictPort: true },
+  preview: { port, strictPort: true },
 });
